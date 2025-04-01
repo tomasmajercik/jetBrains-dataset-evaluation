@@ -1,0 +1,18 @@
+.main
+{
+    width: 100%;
+    height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+img
+{
+    width: 100px;
+    height: auto;
+}
+.biger
+{
+    width: 120px;
+    height: auto;
+}

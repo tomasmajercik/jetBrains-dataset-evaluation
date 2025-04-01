@@ -1,0 +1,49 @@
+.modal
+{
+    position: absolute;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.addH2
+{
+    color: white;
+    margin-bottom: 20px;
+}
+.addInput
+{
+    width: 300px;
+    height: 30px;
+    text-align: center;
+}
+.addbtn
+{
+    color: #000;
+    font-size: 20px;
+    border: none;
+    padding: 20px;
+    border-radius: 10px;
+    margin: 4px;
+    background-color: #65D692;
+    margin-top: 20px;
+}
+.addbtn2
+{
+    color: #000;
+    font-size: 20px;
+    border: none;
+    padding: 20px;
+    border-radius: 10px;
+    margin: 4px;
+    background-color: #F57C7E;
+}
+.modal-content
+{
+    padding: 20px 50px;
+    border-radius: 20px;
+    background-color: black;
+    border: 1px solid blue;
+}
