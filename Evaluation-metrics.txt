@@ -1,0 +1,4 @@
+Exact Match - checks if predicted code is exactly same as reference
+chrF score - evaluates similarity of strings along characters
+BLEU score - analyse tokens in generated code
+syntax check? - to check if code is valid
