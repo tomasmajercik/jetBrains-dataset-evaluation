@@ -1,6 +1,6 @@
 import json
 
-dataset_file = "dataset_vI.json"
+dataset_file = "datasets/dataset_vI.json"
 
 with open(dataset_file, "r", encoding="utf-8") as f:
     dataset = json.load(f)
