@@ -1,6 +1,5 @@
 import json
 
-from rapidfuzz.distance.metrics_cpp import levenshtein_distance
 from transformers import AutoModelForCausalLM, AutoTokenizer
 import evaluate
 import Levenshtein
@@ -76,7 +75,7 @@ if __name__ == "__main__":
     dataset = load_dataset(dataset_path)
     results = []
 
-    for sample in dataset[:5]: # test on first sample
+    for sample in dataset: # test on first sample
         prefix = sample["prefix"]
         suffix = sample["suffix"]
         real_middle = sample["middle"]
