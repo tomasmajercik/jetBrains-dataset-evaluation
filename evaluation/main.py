@@ -31,23 +31,43 @@ def generate_code(prefix, suffix, model, tokenizer):
 
     outputs = model.generate(
         **inputs,
-        # pad_token_id=tokenizer.eos_token_id, #TODO: skus
+        pad_token_id=tokenizer.eos_token_id,
         max_new_tokens=50,
     )
 
     generated = tokenizer.decode(outputs[0], skip_special_tokens=False)
-    # print("🔍 Full generated sequence:\n", generated)
+    middle_only = extract_middle(generated, prefix, suffix)
+    return middle_only
 
-    # Odstrihni prefix a suffix
-    start = generated.find(suffix)
-    if start != -1:
-        middle_part = generated[:start]
+# def extract_middle(generated: str, prefix: str, suffix: str):
+#     # Nájdi začiatok <fim_middle>
+#     if "<fim_middle>" in generated:
+#         middle_part = generated.split("<fim_middle>")[1]
+#     else:
+#         middle_part = generated
+#
+#     # Odstráň suffix, ak ho skopíroval
+#     if suffix in middle_part:
+#         middle_part = middle_part.split(suffix)[0]
+#
+#     # Odstráň prefix, ak tam omylom ostal
+#     if prefix in middle_part:
+#         middle_part = middle_part.replace(prefix, "")
+#
+#     # Odstráň zvyšné špeciálne tokeny a whitespace
+#     return middle_part.replace("<|endoftext|>", "").strip()
+
+def extract_middle(generated: str, prefix: str, suffix: str):
+    # 1. Nájdeš <fim_middle> a vezmeš to, čo nasleduje
+    if "<fim_middle>" in generated:
+        middle_part = generated.split("<fim_middle>", 1)[1]
     else:
         middle_part = generated
 
-    # Odstráň prefix ak ho skopíroval
-    if prefix in middle_part:
-        middle_part = middle_part.replace(prefix, "")
+    # 2. Ak generovanie pokračuje ďalším promptom (čo je bug), odseknúť to
+    for stop_token in ["<fim_prefix>", "<fim_suffix>", "<file_sep>", "<|endoftext|>"]:
+        if stop_token in middle_part:
+            middle_part = middle_part.split(stop_token, 1)[0]
 
     return middle_part.strip()
 
@@ -55,18 +75,6 @@ def generate_code(prefix, suffix, model, tokenizer):
 if __name__ == "__main__":
     dataset_path = "dataset.json" # path to dataset file
     dataset = load_dataset(dataset_path)
-
-    ''' Hugging Face Tokenizer '''
-    # tokenizer = AutoTokenizer.from_pretrained(checkpoint)
-    # model = AutoModelForCausalLM.from_pretrained(checkpoint).to(device)
-    # tokenizer = AutoTokenizer.from_pretrained(checkpoint, trust_remote_code=True)
-    # tokenizer.add_special_tokens({
-    #     "additional_special_tokens": ["<fim_prefix>", "<fim_suffix>", "<fim_middle>"]
-    # })
-    #
-    # model = AutoModelForCausalLM.from_pretrained(checkpoint, trust_remote_code=True)
-    # model.resize_token_embeddings(len(tokenizer))
-    # model.to(device)
 
     for sample in dataset[:5]: # test on first sample
         prefix = sample["prefix"]
